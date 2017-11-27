@@ -12,7 +12,6 @@ general {
 
 order += "disk /"
 order += "run_watch DHCP"
-order += "run_watch VPN"
 order += "cpu_temperature 0"
 order += "cpu_usage"
 #order += "wireless wlan0"
@@ -51,10 +50,6 @@ battery 1 {
 
 run_watch DHCP {
         pidfile = "/var/run/dhclient*.pid"
-}
-
-run_watch VPN {
-        pidfile = "/var/run/vpnc/pid"
 }
 
 tztime local {
