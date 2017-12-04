@@ -1,0 +1,171 @@
+#vim: filetype=i3
+
+font pango: System San Francisco Display 10
+set $up l
+set $down k
+set $left j
+set $right semicolon
+set $mod Mod4
+new_window 1pixel
+
+bar {
+  position top
+  status_command i3status
+  colors 
+  {
+    background #2F333E
+    statusline #ffffff
+    separator #ffffff
+    focused_workspace #000000 #3F4551 #ffffff
+    inactive_workspace #333333 #222222 #888888
+    urgent_workspace #aa0000 #990000 #ffffff
+  }
+  strip_workspace_numbers yes
+}
+
+floating_modifier $mod
+
+bindsym $mod+Return exec terminator
+
+bindsym $mod+Shift+q kill
+
+set $bg-color            #2f343f
+set $text-color          #f3f4f5
+bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 450 -opacity "85" -bw 0 -bc "$bg-color" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
+#bindsym $mod+d exec dmenu_run
+
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+bindsym $mod+h split h
+
+bindsym $mod+v split v
+
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+Shift+space floating toggle
+
+bindsym $mod+space focus mode_toggle
+
+bindsym $mod+a focus parent
+
+#bindsym $mod+d focus child
+
+bindsym $mod+Shift+minus move scratchpad
+
+bindsym $mod+minus scratchpad show
+
+# switch to workspace
+set $tag1 1:1
+set $tag2 2:2
+set $tag3 3:3
+set $tag4 4:4
+set $tag5 5:5
+bindsym $mod+1 workspace $tag1
+bindsym $mod+2 workspace $tag2
+bindsym $mod+3 workspace $tag3
+bindsym $mod+4 workspace $tag4
+bindsym $mod+5 workspace $tag5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $tag1
+bindsym $mod+Shift+2 move container to workspace $tag2
+bindsym $mod+Shift+3 move container to workspace $tag3
+bindsym $mod+Shift+4 move container to workspace $tag4
+bindsym $mod+Shift+5 move container to workspace $tag5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+
+bindsym $mod+Shift+f exec terminator -e ranger
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Set shut down, restart and locking features
+bindsym $mod+0 mode "$mode_system"
+set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+  bindsym l exec --no-startup-id i3lock-fancy lock, mode "default"
+  bindsym r exec --no-startup-id systemctl reboot, mode "default"
+  bindsym Shift+s exec --no-startup-id poweroff, mode "default"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+
+}
+
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+# These bindings trigger as soon as you enter the resize mode
+
+# Pressing left will shrink the window’s width.
+# Pressing right will grow the window’s width.
+# Pressing up will shrink the window’s height.
+# Pressing down will grow the window’s height.
+  bindsym $left       resize shrink width 5 px or 5 ppt
+    bindsym $down       resize grow height 5 px or 5 ppt
+    bindsym $up         resize shrink height 5 px or 5 ppt
+    bindsym $right      resize grow width 5 px or 5 ppt
+
+# same bindings, but for the arrow keys
+    bindsym Left        resize shrink width 5 px or 5 ppt
+    bindsym Down        resize grow height 5 px or 5 ppt
+    bindsym Up          resize shrink height 5 px or 5 ppt
+    bindsym Right       resize grow width 5 px or 5 ppt
+
+# back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+bindsym Ctrl+Shift+Up exec amixer -D pulse sset Master 5%+
+bindsym Ctrl+Shift+Down exec amixer -D pulse sset Master 5%-
+bindsym Ctrl+Shift+L exec i3lock-fancy
+bindsym Print exec screenshot
+exec kupfer
+exec_always feh --recursive --randomize --bg-fill ~/Pictures/wallpapers/ 
+exec pasystray
+exec_always compton -f
+exec_always setxkbmap latam
+exec_always nm-applet
+exec_always dunst
+
+client.focused #888888 #dddddd #222222 #2e9ef4
+client.focused_inactive #333333 #555555 #bbbbbb #484e50
+client.unfocused #333333 #333333 #888888 #292d2e
+client.urgent #2f343a #900000 #ffffff #900000
